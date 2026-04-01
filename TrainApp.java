@@ -4,35 +4,21 @@ import java.util.stream.*;
 public class TrainConsistApp {
     
     public static void main(String[] args) {
-        // Create HashMap to store bogie names and capacities
-        HashMap<String, Integer> bogieCapacity = new HashMap<>();
-        
-        // Add bogies with capacities
-        bogieCapacity.put("Sleeper", 72);
-        bogieCapacity.put("AC Chair", 56);
-        bogieCapacity.put("First Class", 24);
+        // Create list of bogie names with types
+        List<String> bogies = Arrays.asList(
+            "Sleeper", "AC Chair", "First Class",
+            "Sleeper", "AC Chair", "Sleeper"
+        );
         
         System.out.println("All Bogies:");
-        bogieCapacity.forEach((name, capacity) -> 
-            System.out.println(name + " : " + capacity + " seats"));
+        System.out.println(bogies);
         
-        // Filter bogies with capacity > 60 using Streams
-        List<Map.Entry<String, Integer>> filteredBogies = bogieCapacity.entrySet()
-            .stream()
-            .filter(entry -> entry.getValue() > 60)
-            .collect(Collectors.toList());
+        // Group bogies by type using Collectors.groupingBy
+        Map<String, List<String>> groupedBogies = bogies.stream()
+            .collect(Collectors.groupingBy(bogie -> bogie));
         
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
-        if (filteredBogies.isEmpty()) {
-            System.out.println("No bogies found with capacity > 60");
-        } else {
-            for (Map.Entry<String, Integer> entry : filteredBogies) {
-                System.out.println(entry.getKey() + " : " + entry.getValue() + " seats");
-            }
-        }
-        
-        // Verify original list unchanged
-        System.out.println("\nOriginal List Unchanged:");
-        System.out.println(bogieCapacity);
+        System.out.println("\nGrouped Bogies by Type:");
+        groupedBogies.forEach((type, list) -> 
+            System.out.println(type + " : " + list + " (Count: " + list.size() + ")"));
     }
 }
