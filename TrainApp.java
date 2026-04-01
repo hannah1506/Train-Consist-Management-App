@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.*;
 
 public class TrainConsistApp {
     
@@ -11,18 +12,27 @@ public class TrainConsistApp {
         bogieCapacity.put("AC Chair", 56);
         bogieCapacity.put("First Class", 24);
         
-        System.out.println("Before Sorting:");
-        System.out.println(bogieCapacity);
+        System.out.println("All Bogies:");
+        bogieCapacity.forEach((name, capacity) -> 
+            System.out.println(name + " : " + capacity + " seats"));
         
-        // Convert to List for sorting
-        List<Map.Entry<String, Integer>> list = new ArrayList<>(bogieCapacity.entrySet());
+        // Filter bogies with capacity > 60 using Streams
+        List<Map.Entry<String, Integer>> filteredBogies = bogieCapacity.entrySet()
+            .stream()
+            .filter(entry -> entry.getValue() > 60)
+            .collect(Collectors.toList());
         
-        // Sort by capacity using Comparator
-        list.sort(Comparator.comparingInt(Map.Entry::getValue));
-        
-        System.out.println("\nAfter Sorting by Capacity (Ascending):");
-        for (Map.Entry<String, Integer> entry : list) {
-            System.out.println(entry.getKey() + " : " + entry.getValue() + " seats");
+        System.out.println("\nFiltered Bogies (Capacity > 60):");
+        if (filteredBogies.isEmpty()) {
+            System.out.println("No bogies found with capacity > 60");
+        } else {
+            for (Map.Entry<String, Integer> entry : filteredBogies) {
+                System.out.println(entry.getKey() + " : " + entry.getValue() + " seats");
+            }
         }
+        
+        // Verify original list unchanged
+        System.out.println("\nOriginal List Unchanged:");
+        System.out.println(bogieCapacity);
     }
 }
