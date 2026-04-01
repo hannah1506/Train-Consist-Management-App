@@ -1,24 +1,26 @@
-import java.util.*;
-import java.util.stream.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class TrainConsistApp {
     
     public static void main(String[] args) {
-        // Create list of bogie names with types
-        List<String> bogies = Arrays.asList(
-            "Sleeper", "AC Chair", "First Class",
-            "Sleeper", "AC Chair", "Sleeper"
-        );
+        // Define regex patterns
+        String trainIdPattern = "TRN-\\d{4}";
+        String cargoCodePattern = "PET-[A-Z]{2}";
         
-        System.out.println("All Bogies:");
-        System.out.println(bogies);
+        // Test inputs
+        String trainId1 = "TRN-1234";
+        String trainId2 = "TRAIN12";
+        String cargoCode1 = "PET-AB";
+        String cargoCode2 = "PET-ab";
         
-        // Group bogies by type using Collectors.groupingBy
-        Map<String, List<String>> groupedBogies = bogies.stream()
-            .collect(Collectors.groupingBy(bogie -> bogie));
+        // Validate Train IDs
+        System.out.println("Train ID Validation:");
+        System.out.println(trainId1 + " : " + trainId1.matches(trainIdPattern));
+        System.out.println(trainId2 + " : " + trainId2.matches(trainIdPattern));
         
-        System.out.println("\nGrouped Bogies by Type:");
-        groupedBogies.forEach((type, list) -> 
-            System.out.println(type + " : " + list + " (Count: " + list.size() + ")"));
+        System.out.println("\nCargo Code Validation:");
+        System.out.println(cargoCode1 + " : " + cargoCode1.matches(cargoCodePattern));
+        System.out.println(cargoCode2 + " : " + cargoCode2.matches(cargoCodePattern));
     }
 }
