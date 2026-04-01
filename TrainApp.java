@@ -1,30 +1,22 @@
-import java.util.ArrayList;
+import java.util.HashSet;
 
-public class TrainApp {
+public class TrainConsistApp {
     
     public static void main(String[] args) {
-        // Create ArrayList for passenger bogies
-        ArrayList<String> passengerBogies = new ArrayList<>();
+        // Create HashSet for unique bogie IDs
+        HashSet<String> bogieIDs = new HashSet<>();
         
-        // Add bogies
-        passengerBogies.add("Sleeper");
-        passengerBogies.add("AC Chair");
-        passengerBogies.add("First Class");
+        // Add bogie IDs (including duplicates)
+        bogieIDs.add("BG101");
+        bogieIDs.add("BG102");
+        bogieIDs.add("BG103");
+        bogieIDs.add("BG101");  // Duplicate - will be ignored
+        bogieIDs.add("BG102");  // Duplicate - will be ignored
+        bogieIDs.add("BG104");
         
-        // Display after adding
-        System.out.println("After Adding Bogies: Passenger Bogies : " + passengerBogies);
-        
-        // Remove 'AC Chair'
-        passengerBogies.remove("AC Chair");
-        
-        // Display after removal
-        System.out.println("After Removing 'AC Chair': Passenger Bogies : " + passengerBogies);
-        
-        // Check if Sleeper exists
-        System.out.println("Checking if 'Sleeper' exists: Contains Sleeper? : " + passengerBogies.contains("Sleeper"));
-        
-        // Display final list
-        System.out.println("Final Train Passenger Consist: " + passengerBogies);
-        System.out.println("UC2 operations completed successfully...");
+        // Display unique bogie IDs
+        System.out.println("Unique Bogie IDs: " + bogieIDs);
+        System.out.println("Total unique bogies: " + bogieIDs.size());
+        System.out.println("Duplicate IDs were automatically removed!");
     }
 }
