@@ -1,23 +1,27 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TrainConsistApp {
     
     public static void main(String[] args) {
-        // Create HashMap to store bogie and capacity
+        // Create HashMap to store bogie names and capacities
         HashMap<String, Integer> bogieCapacity = new HashMap<>();
         
-        // Add bogies with their capacities
+        // Add bogies with capacities
         bogieCapacity.put("Sleeper", 72);
-        bogieCapacity.put("AC Chair", 48);
+        bogieCapacity.put("AC Chair", 56);
         bogieCapacity.put("First Class", 24);
         
-        // Display bogie capacities
-        System.out.println("Bogie Capacity Details:");
-        System.out.println("------------------------");
+        System.out.println("Before Sorting:");
+        System.out.println(bogieCapacity);
         
-        // Iterate through the map
-        for (Map.Entry<String, Integer> entry : bogieCapacity.entrySet()) {
+        // Convert to List for sorting
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(bogieCapacity.entrySet());
+        
+        // Sort by capacity using Comparator
+        list.sort(Comparator.comparingInt(Map.Entry::getValue));
+        
+        System.out.println("\nAfter Sorting by Capacity (Ascending):");
+        for (Map.Entry<String, Integer> entry : list) {
             System.out.println(entry.getKey() + " : " + entry.getValue() + " seats");
         }
     }
