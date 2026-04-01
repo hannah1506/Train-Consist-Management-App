@@ -1,26 +1,69 @@
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+import java.util.*;
 
 public class TrainConsistApp {
     
     public static void main(String[] args) {
-        // Define regex patterns
-        String trainIdPattern = "TRN-\\d{4}";
-        String cargoCodePattern = "PET-[A-Z]{2}";
+        // Create list of goods bogies
+        List<GoodsBogie> goodsBogies = new ArrayList<>();
+        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsBogies.add(new GoodsBogie("Rectangular", "Coal"));
+        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsBogies.add(new GoodsBogie("Rectangular", "Grain"));
         
-        // Test inputs
-        String trainId1 = "TRN-1234";
-        String trainId2 = "TRAIN12";
-        String cargoCode1 = "PET-AB";
-        String cargoCode2 = "PET-ab";
+        System.out.println("Goods Bogies:");
+        for (GoodsBogie b : goodsBogies) {
+            System.out.println(b);
+        }
         
-        // Validate Train IDs
-        System.out.println("Train ID Validation:");
-        System.out.println(trainId1 + " : " + trainId1.matches(trainIdPattern));
-        System.out.println(trainId2 + " : " + trainId2.matches(trainIdPattern));
+        // Safety check: Cylindrical bogies must carry only Petroleum
+        boolean isSafe = goodsBogies.stream()
+            .allMatch(bogie -> 
+                !bogie.type.equals("Cylindrical") || bogie.cargo.equals("Petroleum")
+            );
         
-        System.out.println("\nCargo Code Validation:");
-        System.out.println(cargoCode1 + " : " + cargoCode1.matches(cargoCodePattern));
-        System.out.println(cargoCode2 + " : " + cargoCode2.matches(cargoCodePattern));
+        System.out.println("\nSafety Compliance Check:");
+        if (isSafe) {
+            System.out.println("Train is SAFE - All cylindrical bogies carry Petroleum");
+        } else {
+            System.out.println("Train is UNSAFE - Cylindrical bogies must carry only Petroleum");
+        }
+        
+        // Test with unsafe bogie
+        System.out.println("\n=== Testing with Unsafe Configuration ===");
+        List<GoodsBogie> unsafeBogies = new ArrayList<>();
+        unsafeBogies.add(new GoodsBogie("Cylindrical", "Coal"));
+        unsafeBogies.add(new GoodsBogie("Rectangular", "Petroleum"));
+        unsafeBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        
+        System.out.println("Goods Bogies:");
+        for (GoodsBogie b : unsafeBogies) {
+            System.out.println(b);
+        }
+        
+        boolean isSafe2 = unsafeBogies.stream()
+            .allMatch(bogie -> 
+                !bogie.type.equals("Cylindrical") || bogie.cargo.equals("Petroleum")
+            );
+        
+        System.out.println("\nSafety Compliance Check:");
+        if (isSafe2) {
+            System.out.println("Train is SAFE - All cylindrical bogies carry Petroleum");
+        } else {
+            System.out.println("Train is UNSAFE - Cylindrical bogies must carry only Petroleum");
+        }
+    }
+}
+
+class GoodsBogie {
+    String type;
+    String cargo;
+    
+    GoodsBogie(String type, String cargo) {
+        this.type = type;
+        this.cargo = cargo;
+    }
+    
+    public String toString() {
+        return type + ":" + cargo;
     }
 }
