@@ -1,58 +1,65 @@
 import java.util.*;
-import java.util.stream.*;
+
+// Custom Exception Class
+class InvalidCapacityException extends Exception {
+    public InvalidCapacityException(String message) {
+        super(message);
+    }
+}
+
+// Passenger Bogie Class
+class PassengerBogie {
+    String name;
+    int capacity;
+    
+    PassengerBogie(String name, int capacity) throws InvalidCapacityException {
+        if (capacity <= 0) {
+            throw new InvalidCapacityException("Capacity must be greater than zero");
+        }
+        this.name = name;
+        this.capacity = capacity;
+    }
+    
+    public String toString() {
+        return name + ":" + capacity + " seats";
+    }
+}
 
 public class TrainConsistApp {
     
     public static void main(String[] args) {
-        // Create large dataset of bogie capacities
-        List<Integer> capacities = new ArrayList<>();
-        for (int i = 0; i < 1000000; i++) {
-            capacities.add(50 + (int)(Math.random() * 50));
+        System.out.println("=== Adding Passenger Bogies ===");
+        
+        // Try to add valid bogies
+        try {
+            PassengerBogie bogie1 = new PassengerBogie("Sleeper", 72);
+            System.out.println("Added: " + bogie1);
+            
+            PassengerBogie bogie2 = new PassengerBogie("AC Chair", 56);
+            System.out.println("Added: " + bogie2);
+            
+            PassengerBogie bogie3 = new PassengerBogie("First Class", 24);
+            System.out.println("Added: " + bogie3);
+            
+        } catch (InvalidCapacityException e) {
+            System.out.println("Error: " + e.getMessage());
         }
         
-        System.out.println("Dataset Size: " + capacities.size() + " bogies");
-        System.out.println("Filtering bogies with capacity > 60");
-        System.out.println();
+        System.out.println("\n=== Testing Invalid Capacities ===");
         
-        // Method 1: Traditional Loop
-        long startLoop = System.nanoTime();
-        
-        List<Integer> loopResult = new ArrayList<>();
-        for (int cap : capacities) {
-            if (cap > 60) {
-                loopResult.add(cap);
-            }
+        // Try to add invalid bogies
+        try {
+            PassengerBogie bogie4 = new PassengerBogie("Invalid", 0);
+            System.out.println("Added: " + bogie4);
+        } catch (InvalidCapacityException e) {
+            System.out.println("Error adding bogie with capacity 0: " + e.getMessage());
         }
         
-        long endLoop = System.nanoTime();
-        long loopTime = endLoop - startLoop;
-        
-        System.out.println("Loop Approach:");
-        System.out.println("  Filtered count: " + loopResult.size());
-        System.out.println("  Time: " + loopTime / 1000000 + " ms");
-        
-        // Method 2: Stream Approach
-        long startStream = System.nanoTime();
-        
-        List<Integer> streamResult = capacities.stream()
-            .filter(cap -> cap > 60)
-            .collect(Collectors.toList());
-        
-        long endStream = System.nanoTime();
-        long streamTime = endStream - startStream;
-        
-        System.out.println("\nStream Approach:");
-        System.out.println("  Filtered count: " + streamResult.size());
-        System.out.println("  Time: " + streamTime / 1000000 + " ms");
-        
-        // Compare results
-        System.out.println("\nComparison:");
-        System.out.println("  Results match: " + loopResult.equals(streamResult));
-        
-        if (loopTime < streamTime) {
-            System.out.println("  Loop was faster by " + (streamTime - loopTime) / 1000000 + " ms");
-        } else {
-            System.out.println("  Stream was faster by " + (loopTime - streamTime) / 1000000 + " ms");
+        try {
+            PassengerBogie bogie5 = new PassengerBogie("Invalid", -10);
+            System.out.println("Added: " + bogie5);
+        } catch (InvalidCapacityException e) {
+            System.out.println("Error adding bogie with capacity -10: " + e.getMessage());
         }
     }
 }
