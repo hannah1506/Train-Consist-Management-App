@@ -1,24 +1,25 @@
 import java.util.*;
-import java.util.stream.*;
 
 public class TrainConsistApp {
     
     public static void main(String[] args) {
-        // Create list of bogie names with types
-        List<String> bogies = Arrays.asList(
-            "Sleeper", "AC Chair", "First Class",
-            "Sleeper", "AC Chair", "Sleeper"
-        );
+        // Create HashMap to store bogie names and capacities
+        HashMap<String, Integer> bogieCapacity = new HashMap<>();
         
-        System.out.println("All Bogies:");
-        System.out.println(bogies);
+        // Add bogies with capacities
+        bogieCapacity.put("Sleeper", 72);
+        bogieCapacity.put("AC Chair", 56);
+        bogieCapacity.put("First Class", 24);
+        bogieCapacity.put("Sleeper", 72);  // Adding another Sleeper
         
-        // Group bogies by type using Collectors.groupingBy
-        Map<String, List<String>> groupedBogies = bogies.stream()
-            .collect(Collectors.groupingBy(bogie -> bogie));
+        System.out.println("Bogie Capacities:");
+        bogieCapacity.forEach((name, capacity) -> 
+            System.out.println(name + " : " + capacity + " seats"));
         
-        System.out.println("\nGrouped Bogies by Type:");
-        groupedBogies.forEach((type, list) -> 
-            System.out.println(type + " : " + list + " (Count: " + list.size() + ")"));
+        // Calculate total seats using reduce
+        int totalSeats = bogieCapacity.values().stream()
+            .reduce(0, Integer::sum);
+        
+        System.out.println("\nTotal Seats in Train: " + totalSeats);
     }
 }
